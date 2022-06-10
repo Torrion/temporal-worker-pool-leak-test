@@ -10,7 +10,7 @@ server:
 temporal:
     address: temporal:7233
     activities:
-        num_workers: 2
+        num_workers: 3
         #max_jobs: 10
         supervisor:
             idle_ttl: 10s

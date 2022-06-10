@@ -26,7 +26,8 @@ class ManyTasksWorkflow
                                 ->withMaximumAttempts(5)
 
                         )
-                        ->withScheduleToCloseTimeout('5 minute')
+                        ->withScheduleToStartTimeout('2 minute')
+                        ->withStartToCloseTimeout('5 minute')
                 )
                 ->exec()
             ;

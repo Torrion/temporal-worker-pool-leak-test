@@ -1,5 +1,13 @@
+ARG ROADRUNNER_VERSION="2.10.3"
+ARG COMPOSER_VERSION="2"
+ARG XDEBUG_VERSION="3.1.3"
+ARG PROTOBUF_VERSION="3.17.3"
+ARG COMPOSER_AUTH
+ARG APP_BASE_DIR="/app"
+ARG PHPREDIS_VERSION="5.3.4"
+# ------------------------------------------- PHP ROADRUNNER Configuration ---------------------------------------------
+FROM ghcr.io/roadrunner-server/roadrunner:2.10.4-rc.1 AS roadrunner
 FROM php:8.1.3-cli-alpine3.14
-
 
 RUN echo "date.timezone = UTC"         > /usr/local/etc/php/conf.d/etc.ini
 ENV TERM xterm
@@ -34,7 +42,7 @@ RUN apk del .build-deps
 
 #Runner env setup
 
-COPY --from=spiralscout/roadrunner:2.10.3 /usr/bin/rr /bin/rr
+COPY --from=roadrunner /usr/bin/rr /bin/rr
 
 # PHP project setup
 COPY --from=composer:2.1.6 /usr/bin/composer /usr/bin/composer
@@ -53,4 +61,4 @@ RUN composer check-platform-reqs \
 
 COPY . /app
 
-ENTRYPOINT /bin/rr serve -d -c /app/.rr.yaml
+ENTRYPOINT /bin/rr serve -c /app/.rr.yaml
